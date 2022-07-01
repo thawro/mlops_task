@@ -8,7 +8,7 @@ The data you will use consists of PPG (Photopletysmograph) and ABP (Arterial Blo
 
 # Task
 
-## 0. Create public repository on github
+## 0. Clone repository and create your branch.
 
 ## 1. Implement ML pipeline using [DVC pipelines](https://dvc.org/doc/start/data-management/pipelines).
 
@@ -28,13 +28,11 @@ The pipeline is supposed to consist of four stages:
     * Plot results (`y_pred` vs `y_test`)
     * Save metrics and plots to files.
     
-## 2. Use `docker` or `docker compose` to containerize the dvc pipeline
+## 2. Use `docker` or `docker compose` to containerize the dvc pipeline.
 
 Make it possible for us to run the whole thing using comands like:
 
 ```console
-git clone https://github.com/username/repo_name.git
-cd repo-name
 docker build -t custom_tag .
 docker run custom_tag
 ```
