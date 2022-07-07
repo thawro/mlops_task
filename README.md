@@ -23,7 +23,7 @@ The pipeline is supposed to consist of five stages:
 2. Split data into `train` and `test` datasets. Use data output from #1. Must be dependent on `train_size` param used to define size of train data after the split.
 3. Preprocess data with [StandardScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html). Use data output from #2. Must be dependend on `use_scaler` param used to define if the data will be scaled in that step.
 4. Fit ML model (of your choice). Use data output from #3. Must be dependent on `target` param used to define if labels for ML model will be systolic blood pressure (`sbp`) or diastolic blood pressure (`dbp`) 
-5. Evaluate ML model from #4. Use data output from #3. Must be dependent on `target` (same is #4) param used to define if labels for evaluation will be systolic blood pressure (`sbp`) or diastolic blood pressure (`dbp`) 
+5. Evaluate ML model from #4. Use data output from #3. Must be dependent on `target` (same as in #4) param used to define if labels for evaluation will be systolic blood pressure (`sbp`) or diastolic blood pressure (`dbp`) 
     * Report evaluation metrics (`mae` and `mse`)
     * Plot results (`y_pred` vs `y_test`)
     * Save metrics and plots to files.
@@ -38,7 +38,7 @@ After running dvc pipeline (`dvc repro`) `results` directory is supposed to cont
 
 ## 3 Add [MLflow](https://www.mlflow.org/docs/latest/python_api/mlflow.html) for metrics and params logging. 
 
-You can add MLflow using one of 3 options:
+You can add MLflow using one of 3 options (your choice):
 * Add MLflow logging to the same service as DVC (not recommended)
 * Create new (mlflow) service with some volumes shared with DVC service
 * Create new (mlflow) service which will use some remote bucket as source of experiments info (DVC service is supposed to log metrics to that bucket) 
