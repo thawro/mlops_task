@@ -22,25 +22,23 @@ The pipeline is supposed to consist of five stages:
         * diastolic blood pressure (`dbp`) - mean value of ABP local minimas [find_peaks](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html) recommended)
 2. Split data into `train` and `test` datasets. Use data output from #1. Must be dependent on `train_size` param used to define size of train data after the split.
 3. Preprocess data with [StandardScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html). Use data output from #2. Must be dependend on `use_scaler` param used to define if the data will be scaled in that step.
-4. Fit ML model. Use data output from #3. Must be dependent on `target` param used to define if labels for ML model will be systolic blood pressure (`sbp`) or diastolic blood pressure (`dbp`) 
-   * Train ML model of your choice
- 5. Evaluate ML model from #4. Use data output from #3. Must be dependent on `target` (same is #4) param used to define if labels for evaluation will be systolic blood pressure (`sbp`) or diastolic blood pressure (`dbp`).
-   * Report evaluation metrics (`mae` and `mse`)
-   * Plot results (`y_pred` vs `y_test`)
-   * Save metrics and plots to files.
+4. Fit ML model (of your choice). Use data output from #3. Must be dependent on `target` param used to define if labels for ML model will be systolic blood pressure (`sbp`) or diastolic blood pressure (`dbp`) 
+5. Evaluate ML model from #4. Use data output from #3. Must be dependent on `target` (same is #4) param used to define if labels for evaluation will be systolic blood pressure (`sbp`) or diastolic blood pressure (`dbp`) 
+    * Report evaluation metrics (`mae` and `mse`)
+    * Plot results (`y_pred` vs `y_test`)
+    * Save metrics and plots to files.
     
 ## 2. Use `docker compose` to containerize the dvc pipeline.
 
-Make it possible for us to run it with `docker compose up`. Container is supposed to be running, so we can enter its `bash` with `docker exec -it container_id bash` and run dvc experiments from within the container. 
+Make it possible for us to run the whole application with `docker compose up`. Container is supposed to be running, so we can enter its `bash` with `docker exec -it container_id bash` and run dvc experiments from within the container. 
 
 After running dvc pipeline (`dvc repro`) `results` directory is supposed to contain at least:
 * `metrics.json` file with evaluation metrics
 * `pred_vs_true.jpg` file with results figure
 
-## 3 Add [MLflow](https://www.mlflow.org/docs/latest/python_api/mlflow.html) for metrics logging (`mlflow.log_metrics(metrics)`). 
+## 3 Add [MLflow](https://www.mlflow.org/docs/latest/python_api/mlflow.html) for metrics and params logging (`mlflow.log_metrics(metrics)`). 
 
 You can add MLflow using one of 3 options:
-* Add MLflow logging to the same service (not recommended)
+* Add MLflow logging to the same service as DVC (not recommended)
 * Create new (mlflow) service with some volumes shared with DVC service
-
-## Optionally: Make it possible to enter `train_size`, `use_scaler` and `target` arguments to `docker run`. Those arguments will serve as params to dvc pipeline. 
+* Create new (mlflow) service which will use some remote bucket as source of experiments info (DVC service is supposed to log metrics to that bucket) 
