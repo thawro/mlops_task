@@ -36,7 +36,7 @@ After running dvc pipeline (`dvc repro`) `results` directory is supposed to cont
 * `metrics.json` file with evaluation metrics
 * `pred_vs_true.jpg` file with results figure
 
-## 3 Add [MLflow](https://www.mlflow.org/docs/latest/python_api/mlflow.html) for metrics and params logging (`mlflow.log_metrics(metrics)`). 
+## 3 Add [MLflow](https://www.mlflow.org/docs/latest/python_api/mlflow.html) for metrics and params logging. 
 
 You can add MLflow using one of 3 options:
 * Add MLflow logging to the same service as DVC (not recommended)
