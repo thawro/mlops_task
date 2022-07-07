@@ -12,7 +12,7 @@ The data you will use consists of PPG (Photopletysmograph) and ABP (Arterial Blo
 
 ## 1. Implement ML pipeline using [DVC pipelines](https://dvc.org/doc/start/data-management/pipelines).
 
-The pipeline is supposed to consist of four stages:
+The pipeline is supposed to consist of five stages:
 
 1. Extract features. We can provide the script for that step if you wish. 
     * Use `data/ppg.npy` as source of PPG data and `data/abp.npy` as source of ABP data
@@ -22,27 +22,25 @@ The pipeline is supposed to consist of four stages:
         * diastolic blood pressure (`dbp`) - mean value of ABP local minimas [find_peaks](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html) recommended)
 2. Split data into `train` and `test` datasets. Use data output from #1. Must be dependent on `train_size` param used to define size of train data after the split.
 3. Preprocess data with [StandardScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html). Use data output from #2. Must be dependend on `use_scaler` param used to define if the data will be scaled in that step.
-4. Fit ML model and evaluate it. Use data output from #3. Must be dependent on `target` param used to define if labels for ML model will be systolic blood pressure (`sbp`) or diastolic blood pressure (`dbp`) 
-    * Train ML model of your choice
-    * Report evaluation metrics (e.g. `mae`, `mse`)
-    * Plot results (`y_pred` vs `y_test`)
-    * Save metrics and plots to files.
+4. Fit ML model. Use data output from #3. Must be dependent on `target` param used to define if labels for ML model will be systolic blood pressure (`sbp`) or diastolic blood pressure (`dbp`) 
+   * Train ML model of your choice
+ 5. Evaluate ML model from #4. Use data output from #3. Must be dependent on `target` (same is #4) param used to define if labels for evaluation will be systolic blood pressure (`sbp`) or diastolic blood pressure (`dbp`).
+   * Report evaluation metrics (`mae` and `mse`)
+   * Plot results (`y_pred` vs `y_test`)
+   * Save metrics and plots to files.
     
-## 2. Use `docker` or `docker compose` to containerize the dvc pipeline.
+## 2. Use `docker compose` to containerize the dvc pipeline.
 
-Make it possible for us to run the whole thing using comands like:
+Make it possible for us to run it with `docker compose up`. Container is supposed to be running, so we can enter its `bash` with `docker exec -it container_id bash` and run dvc experiments from within the container. 
 
-```console
-docker build -t custom_tag .
-docker run custom_tag
-```
-
-After running those commands, `results` directory is supposed to contain:
+After running dvc pipeline (`dvc repro`) `results` directory is supposed to contain at least:
 * `metrics.json` file with evaluation metrics
 * `pred_vs_true.jpg` file with results figure
-Which both will be outputs from dvc pipeline.
+
+## 3 Add [MLflow](https://www.mlflow.org/docs/latest/python_api/mlflow.html) for metrics logging (`mlflow.log_metrics(metrics)`). 
+
+You can add MLflow using one of 3 options:
+* Add MLflow logging to the same service (not recommended)
+* Create new (mlflow) service with some volumes shared with DVC service
 
 ## Optionally: Make it possible to enter `train_size`, `use_scaler` and `target` arguments to `docker run`. Those arguments will serve as params to dvc pipeline. 
-
-## Optionally: Add [MLflow](https://www.mlflow.org/docs/latest/python_api/mlflow.html) for metrics and artifacts logging. 
-For MLflow, the `docker-compose` is recommended (the commands mentioned before would change).
