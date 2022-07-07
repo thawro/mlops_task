@@ -19,7 +19,7 @@ The pipeline is supposed to consist of five stages:
     * features from PPG: features like `mean`, `std`, `kurtosis`, etc.
     * labels from ABP data: 
         * systolic blood pressure (`sbp`) - mean value of ABP local maximas ([find_peaks](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html) recommended)
-        * diastolic blood pressure (`dbp`) - mean value of ABP local minimas [find_peaks](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html) recommended)
+        * diastolic blood pressure (`dbp`) - mean value of ABP local minimas ([find_peaks](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html) recommended)
 2. Split data into `train` and `test` datasets. Use data output from #1. Must be dependent on `train_size` param used to define size of train data after the split.
 3. Preprocess data with [StandardScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html). Use data output from #2. Must be dependend on `use_scaler` param used to define if the data will be scaled in that step.
 4. Fit ML model (of your choice). Use data output from #3. Must be dependent on `target` param used to define if labels for ML model will be systolic blood pressure (`sbp`) or diastolic blood pressure (`dbp`) 
